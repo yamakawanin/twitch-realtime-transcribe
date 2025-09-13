@@ -4,14 +4,15 @@ import whisper
 import sys
 import time
 
+# 配置环境建议直接问ai
 # 使用更快的模型以降低延迟
 # 使用更好的显卡提升明显
 model = whisper.load_model("small")  # 你也可以换成 "medium" 或 "large" 提高准确率，但延迟会增加
 
-# Twitch 信息
-TWITCH_USER = "msdvil"
-AUTH_TOKEN = "fgy19lst1f7sgyubegs8l8j8vmsjk7"
-PERSISTENT = "1144830479%3A%3Abhux3uqwf9q76jyapoxtw7hsumy0in"
+# Twitch 信息 (仅供实例)
+TWITCH_USER = "msdvil" # 你想看的主播
+AUTH_TOKEN = "fgy19lst1f7sgyubegs8l88vmsjk7" # auth_token 和 persistent 的value 通过你本人打开twitch，再使用插件editthiscookie可以得到
+PERSISTENT = "1144830479%3A%3Abhux3uqwf9q76jyapoxtw7hsmy0in" # 见上方
 
 def get_hls_url(username):
     cookie_header = f"auth-token={AUTH_TOKEN}; persistent={PERSISTENT}"
@@ -25,7 +26,7 @@ def get_hls_url(username):
 def audio_to_text(audio_data):
     audio_data = whisper.pad_or_trim(audio_data)
     mel = whisper.log_mel_spectrogram(audio_data).to(model.device)
-    options = whisper.DecodingOptions(language="en")  # 限制为英语
+    options = whisper.DecodingOptions(language="en")  # 限制为英语,以提高准确性
     result = whisper.decode(model, mel, options)
     return result.text.strip()
 
@@ -80,3 +81,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
